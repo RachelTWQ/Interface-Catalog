@@ -1,24 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+  
+  const [entry, setEntry] = useState("");
+  const [todos, setTodos] = useState([]);
+
+  function handleEnter(event) {
+    if (event.key === "Enter"){
+      let date = new Date();
+      let timestamp = date.getTime();
+      handleSubmit(timestamp);
+      event.target.value = "";
+    }
+  }
+
+  function handleSubmit(timestamp) {
+    let medium = [];
+    medium.push(...todos, {content:entry, time: timestamp});
+    setTodos(medium); 
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <main>
+        <div>To Do List</div>
+        {todos.map(el => (<p key={el.time}>{el.content}</p>))}
+        <input type="text" placeholder="What to do next?" onChange= {(e) => setEntry(e.currentTarget.value)} onKeyDown={handleEnter} />
+      </main>
     </div>
   );
 }
