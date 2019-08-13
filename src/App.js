@@ -24,8 +24,8 @@ function App() {
   return (
     <div className="App">
       <main>
-        <div>To Do List</div>
-        {todos.map(el => (<p key={el.time}>{el.content}</p>))}
+        <h3>To Do List</h3>
+        {todos.map(el => (<p key={el.time}><span><input type="checkbox" />{el.content}</span></p>))}
         <input type="text" placeholder="What to do next?" onChange= {(e) => setEntry(e.currentTarget.value)} onKeyDown={handleEnter} />
       </main>
     </div>
