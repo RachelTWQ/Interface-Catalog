@@ -22,7 +22,8 @@ function App() {
   }
 
   function removeToDo(event) {
-    console.log(event.target.id)
+    let filteredToDos = todos.filter(el => el.time.toString() !== event.target.id);
+    setTodos(filteredToDos);
   }
 
   return (
