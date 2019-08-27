@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Provider } from 'react-redux';
+import { store } from './reducer';
 import './App.css';
 
 function App() {
@@ -10,30 +12,32 @@ function App() {
     if (event.key === "Enter"){
       let date = new Date();
       let timestamp = date.getTime();
-      handleSubmit(timestamp);
+      addTodoItem(timestamp);
       event.target.value = "";
     }
   }
 
-  function handleSubmit(timestamp) {
+  function addTodoItem(timestamp) {
     let medium = [];
     medium.push(...todos, {content:entry, time: timestamp});
     setTodos(medium); 
   }
 
-  function removeToDo(event) {
-    let filteredToDos = todos.filter(el => el.time.toString() !== event.target.id);
+  function removeTodoItem(event) {
+    let filteredToDos = todos.filter(todo => todo.time.toString() !== event.target.id);
     setTodos(filteredToDos);
   }
 
   return (
-    <div className="App">
-      <main>
-        <h3>To Do List</h3>
-        {todos && todos.length ? todos.map(el => (<p key={el.time} id={el.time} onClick={removeToDo}>{el.content}</p>)) : (<p>Nothing to do Yay!</p>)}
-        <input type="text" placeholder="What to do next?" onChange= {(e) => setEntry(e.currentTarget.value)} onKeyDown={handleEnter} />
-      </main>
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <main>
+          <h3>To Do List</h3>
+          {todos && todos.length ? todos.map(todo => (<p key={todo.time} id={todo.time} onClick={removeTodoItem}>{todo.content}</p>)) : (<p>Nothing to do Yay!</p>)}
+          <input type="text" placeholder="What to do next?" onChange= {(e) => setEntry(e.currentTarget.value)} onKeyDown={handleEnter} />
+        </main>
+      </div>
+    </Provider>
   );
 }
 
